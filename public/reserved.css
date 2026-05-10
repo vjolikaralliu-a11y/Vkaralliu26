@@ -511,3 +511,23 @@ input[name="orderNo"]{background:rgba(245,158,11,.1)!important;border-color:rgba
 
 /* Critical: keep hidden sections hidden on mobile too. Must stay after all media rules. */
 [hidden]{display:none!important}
+
+/* Mobile Elementet tuning: bigger width/height numbers, tighter lower block for thumb use. */
+@media(max-width:899px){
+  .view[data-panel="new"] .item-btn{padding:8px!important;gap:6px!important}
+  .view[data-panel="new"] .item-main-row{gap:6px!important}
+  .view[data-panel="new"] .item-controls{gap:2px!important}
+  .view[data-panel="new"] .move-row{gap:3px!important}
+  .view[data-panel="new"] .move-item,
+  .view[data-panel="new"] .delete-item{min-width:30px!important;min-height:28px!important;padding:4px 7px!important;font-size:.86rem!important;border-radius:7px!important}
+  .view[data-panel="new"] .quick-size{gap:5px!important;padding:5px!important;border-radius:8px!important;align-items:end!important}
+  .view[data-panel="new"] .quick-size label{gap:2px!important;font-size:.62rem!important;line-height:1!important;letter-spacing:.02em!important}
+  .view[data-panel="new"] .quick-size input{height:32px!important;font-size:1rem!important;font-weight:950!important;line-height:1!important;padding:2px 5px!important;border-radius:7px!important;text-align:center!important}
+}
+@media(max-width:560px){
+  .view[data-panel="new"] .quick-size{grid-template-columns:1fr 1fr!important;gap:4px!important;padding:4px!important}
+  .view[data-panel="new"] .quick-size input{height:34px!important;font-size:1.06rem!important}
+}
+
+/* Critical: keep hidden sections hidden on mobile too. Must stay last. */
+[hidden]{display:none!important}
