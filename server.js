@@ -13,6 +13,7 @@ const DB_PATH = path.join(__dirname, 'portal.db');
 
 const db = new sqlite3.Database(DB_PATH);
 const PORT = 8080;
+const SEND_FILE_OPTIONS = { dotfiles: 'allow' };
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,20 +46,27 @@ const adminRequired = (req, res, next) => {
 };
 
 // Middleware to handle static files first
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(PUBLIC_DIR, SEND_FILE_OPTIONS));
 
 app.get('/', (req, res) => res.redirect('/login'));
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'login.html'));
+    const filePath = path.join(PUBLIC_DIR, 'login.html');
+    console.log('Attempting to send file:', filePath);
+    res.sendFile(filePath, SEND_FILE_OPTIONS, (err) => {
+        if (err) {
+            console.error('Error sending login.html:', err);
+            res.status(err.status).end();
+        }
+    });
 });
 
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'register.html'));
+    res.sendFile(path.join(PUBLIC_DIR, 'register.html'), SEND_FILE_OPTIONS);
 });
 
 app.get('/forgot-password', (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'forgot.html'));
+    res.redirect('/login');
 });
 
 app.post('/api/register', (req, res) => {
@@ -86,11 +94,11 @@ app.post('/api/login', (req, res) => {
 });
 
 app.get('/dashboard', authRequired, (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+    res.sendFile(path.join(PUBLIC_DIR, 'index.html'), SEND_FILE_OPTIONS);
 });
 
 app.get('/admin', authRequired, adminRequired, (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'admin.html'));
+    res.status(404).send('Admin page is not available yet.');
 });
 
 app.get('/api/pending-users', authRequired, adminRequired, (req, res) => {
