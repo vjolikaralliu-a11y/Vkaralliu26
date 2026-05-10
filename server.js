@@ -7,9 +7,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Use absolute path for the public folder
-const PUBLIC_DIR = '/home/vjoli/.openclaw/workspace/fletorja/public';
-const DB_PATH = '/home/vjoli/.openclaw/workspace/fletorja/portal.db';
+// Use dynamic path for the public folder
+const PUBLIC_DIR = path.join(__dirname, 'public');
+const DB_PATH = path.join(__dirname, 'portal.db');
 
 const db = new sqlite3.Database(DB_PATH);
 const PORT = 8080;
