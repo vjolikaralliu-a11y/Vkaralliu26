@@ -531,3 +531,16 @@ input[name="orderNo"]{background:rgba(245,158,11,.1)!important;border-color:rgba
 
 /* Critical: keep hidden sections hidden on mobile too. Must stay last. */
 [hidden]{display:none!important}
+
+/* Mobile header action buttons: keep Excel/PDF buttons side-by-side, compact. */
+@media(max-width:899px){
+  .head-actions{width:100%!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+  .head-actions button{min-width:0!important;padding:8px 4px!important;font-size:.72rem!important;line-height:1.08!important;border-radius:7px!important;letter-spacing:0!important;white-space:normal!important}
+}
+@media(max-width:380px){
+  .head-actions{gap:4px!important}
+  .head-actions button{font-size:.68rem!important;padding:7px 3px!important}
+}
+
+/* Critical: keep hidden sections hidden on mobile too. Must stay last. */
+[hidden]{display:none!important}
