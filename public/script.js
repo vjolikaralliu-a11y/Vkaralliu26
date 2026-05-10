@@ -172,7 +172,10 @@ function switchView(view){
 
 function renderAll(){
   if(!currentUser) return;
-  $('[data-admin-box]').hidden = !isAdmin();
+  const adminBox = $('[data-admin-box]'); if(adminBox) adminBox.hidden = true;
+  const approvalNotify = $('[data-approval-notify]');
+  if(approvalNotify){ approvalNotify.hidden = !isAdmin(); approvalNotify.classList.toggle('has-pending', isAdmin() && pendingUsers.length > 0); }
+  const pendingCount = $('[data-pending-count]'); if(pendingCount) pendingCount.textContent = pendingUsers.length;
   $('[data-user-box]').innerHTML = `<strong>${escapeHtml(currentUser.name)}</strong><span>${escapeHtml(currentUser.email)}</span>`;
   renderOrderForm(); renderItems(); renderOrderSummary(); renderItemForm(); draw(); renderOrders(); renderApprovals();
 }
@@ -300,7 +303,8 @@ function renderOrders(){
  $$('[data-open-order]', box).forEach(btn => btn.onclick = () => { const o=orders.find(x=>x.id===btn.dataset.openOrder); if(!o) return; activeOrder=structuredClone(o); activeOrder.items.forEach((it, idx) => { if(!it.category) it.category = 'window'; if(!it.quantity) it.quantity = 1; if(!it.id) it.id = uuid(); }); activeItemId=activeOrder.items[0]?.id; saveDraft(); switchView('new'); });
 }
 function renderApprovals(){
- const box=$('[data-approvals-list]'); if(!box || !isAdmin()) return;
+ const box=$('[data-approvals-list]'); if(!box) return;
+ if(!isAdmin()){ box.innerHTML=''; return; }
  if(!pendingUsers.length){ box.innerHTML='<p class="empty">Nuk ka kërkesa në pritje.</p>'; return; }
  box.innerHTML='';
  pendingUsers.forEach(u=>{ const card=document.createElement('article'); card.className='approval-card'; card.innerHTML=`<div><strong>${escapeHtml(u.name)}</strong><span>${escapeHtml(u.email)} • ${escapeHtml(u.phone || '')}</span><small>${escapeHtml(u.city || '')} / ${escapeHtml(u.residence || '')} / ${escapeHtml(u.location || '')}</small></div><div class="order-actions"><button type="button" data-approve="${u.id}">Aprovo</button><button type="button" class="danger" data-reject="${u.id}">Refuzo</button></div>`; box.appendChild(card); });

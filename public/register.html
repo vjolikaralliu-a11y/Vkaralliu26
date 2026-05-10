@@ -53,10 +53,7 @@
         <a href="./index.html" class="mini-logo"><img src="./assets/vloralumin-logo-header.png" alt="Vlora Alumin" /></a>
         <button class="nav-btn active" data-view="new">Porosi e re<br><span>Shto porosi</span></button>
         <button class="nav-btn" data-view="orders">Porositë<br><span>Porositë e mia</span></button>
-        <div class="admin-only" data-admin-box hidden>
-          <p class="side-title">Admin</p>
-          <button class="nav-btn" data-view="approvals">Aprovime<br><span>Përdorues të rinj</span></button>
-        </div>
+        <div class="admin-only" data-admin-box hidden></div>
         <div class="user-box" data-user-box></div>
         <button class="logout" data-logout>Dil</button>
       </aside>
@@ -68,6 +65,7 @@
             <h1 data-page-title>Porosi e re</h1>
           </div>
           <div class="head-actions">
+            <button type="button" class="approval-notify" data-view="approvals" data-approval-notify hidden title="Kërkesa për aprovim">🔔 <span>Aprovime</span> <b data-pending-count>0</b></button>
             <button data-export>Eksporto Excel</button>
             <button data-print-full>PDF Full</button>
             <button data-print-compact>PDF Kompakt</button>
@@ -81,7 +79,7 @@
         </div>
 
         <section class="view active" data-panel="new">
-          <form class="panel details" data-order-form>
+          <form class="panel details order-dashboard" data-order-form>
             <h2>Të dhënat e porosisë</h2>
             <div class="form-grid">
               <label>Nr. Porosie<input name="orderNo" placeholder="Auto" readonly /></label>

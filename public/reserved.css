@@ -544,3 +544,33 @@ input[name="orderNo"]{background:rgba(245,158,11,.1)!important;border-color:rgba
 
 /* Critical: keep hidden sections hidden on mobile too. Must stay last. */
 [hidden]{display:none!important}
+
+/* PC order dashboard + admin notification button */
+.approval-notify{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;background:rgba(96,165,250,.10)!important;border-color:rgba(96,165,250,.35)!important;color:#dbeafe!important;position:relative!important}
+.approval-notify[hidden]{display:none!important}
+.approval-notify b{min-width:20px;height:20px;border-radius:999px;display:inline-grid;place-items:center;background:#334155;color:#fff;font-size:.72rem;line-height:1;padding:0 5px}
+.approval-notify.has-pending{background:rgba(245,158,11,.16)!important;border-color:rgba(245,158,11,.65)!important;color:#fed7aa!important;box-shadow:0 0 0 3px rgba(245,158,11,.08)}
+.approval-notify.has-pending b{background:#f97316;color:#111827}
+@media(min-width:900px){
+  .order-dashboard{padding:10px 12px!important;border-radius:12px!important;background:linear-gradient(135deg,rgba(16,23,34,.94),rgba(7,11,18,.92))!important}
+  .order-dashboard h2{font-size:1rem!important;margin:0 0 8px!important;color:#fed7aa!important;letter-spacing:.02em!important}
+  .order-dashboard .form-grid{display:grid!important;grid-template-columns:1.05fr 1.35fr 1.2fr 1.2fr .72fr .65fr .95fr .82fr .95fr 1fr!important;gap:7px!important;margin-bottom:7px!important;align-items:end!important}
+  .order-dashboard label,.order-dashboard .map-field{font-size:.72rem!important;gap:4px!important;min-width:0!important}
+  .order-dashboard input,.order-dashboard textarea{padding:7px 8px!important;border-radius:7px!important;font-size:.84rem!important;min-height:34px!important}
+  .order-dashboard textarea{min-height:36px!important;resize:vertical!important}
+  .order-dashboard>label{display:grid!important;grid-template-columns:90px 1fr!important;align-items:start!important;gap:8px!important;margin-top:2px!important;font-size:.72rem!important}
+  .order-dashboard .map-field button{padding:7px 8px!important;font-size:.78rem!important;min-height:34px!important}
+  .order-dashboard .map-field small{font-size:.66rem!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .order-dashboard .continue-elements{display:none!important}
+  .head-actions{align-items:center!important}
+}
+@media(min-width:900px) and (max-width:1320px){
+  .order-dashboard .form-grid{grid-template-columns:repeat(5,minmax(120px,1fr))!important}
+}
+@media(max-width:899px){
+  .approval-notify{padding:8px 4px!important;font-size:.72rem!important;line-height:1.08!important;border-radius:7px!important;gap:3px!important}
+  .approval-notify b{min-width:17px;height:17px;font-size:.64rem;padding:0 4px}
+}
+
+/* Critical: keep hidden sections hidden on mobile too. Must stay last. */
+[hidden]{display:none!important}
