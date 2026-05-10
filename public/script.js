@@ -7,6 +7,12 @@ const LS_ACTIVE_ITEM_PREFIX = 'alumin_reserved_active_item_v2_';
 const LS_USERS = 'alumin_reserved_users_v2';
 const LS_PENDING = 'alumin_reserved_pending_users_v2';
 const today = new Date().toISOString().slice(0,10);
+const MAX_PROFILE_MM = 6500;
+function clampProfileMm(value){
+  const raw = String(value ?? '').replace(/\D/g, '').slice(0, 4);
+  const num = Number(raw) || 200;
+  return Math.min(MAX_PROFILE_MM, Math.max(200, num));
+}
 const SYSTEM_SERIES = { opening: ['TERMIK VLA625', 'TERMIK775', 'Tjetër'], sliding: ['S350', 'S560', 'Tjetër'] };
 const SERIES_VALUE = { 'TERMIK VLA625': 'VLA625', 'TERMIK775': 'VLA775', 'Tjetër': 'other' };
 const COLOR_SWATCHES = {
@@ -177,7 +183,7 @@ function renderCoordinates(){
  const mapText = $('[data-map-coordinates]'); if(mapText) mapText.textContent = text;
 }
 function renderOrderForm(){ updateOrderNumber(false); const f=$('[data-order-form]'); ['orderNo','client','project','location','apartmentNo','floor','latitude','longitude','date','phone','measuredBy','notes'].forEach(k=>{ if(f.elements[k]) f.elements[k].value=activeOrder[k]||''; }); renderCoordinates(); }
-function renderItems(){ const box=$('[data-item-list]'); box.innerHTML=''; activeOrder.items.forEach((i, idx)=>{ const b=document.createElement('div'); b.className='item-btn'+(i.id===activeItemId?' active':''); b.tabIndex=0; b.setAttribute('role','button'); b.innerHTML=`<div class="item-main-row"><span class="item-summary"><span class="pos-box"><em>Pos.${idx+1}</em></span><strong>${escapeHtml(i.name||'Dritare '+(idx+1))}</strong></span><span class="item-controls"><b class="nom-mini">${itemNomination(i)}</b><span class="move-row"><button type="button" class="move-item" title="Lëviz lart" aria-label="Lëviz lart" data-move-item="${i.id}" data-dir="up" ${idx===0?'disabled':''}>↑</button><button type="button" class="move-item" title="Lëviz poshtë" aria-label="Lëviz poshtë" data-move-item="${i.id}" data-dir="down" ${idx===activeOrder.items.length-1?'disabled':''}>↓</button><button type="button" class="delete-item" title="Fshi nga porosia" aria-label="Fshi ${escapeHtml(i.name||'elementin')}" data-delete-item="${i.id}">🗑</button></span></span></div><span class="quick-size"><label>Gjerësi<input data-quick-size="width" data-item-id="${i.id}" type="number" min="200" step="10" value="${i.width||0}"></label><label>Lartësi<input data-quick-size="height" data-item-id="${i.id}" type="number" min="200" step="10" value="${i.height||0}"></label></span>`; b.onclick=(ev)=>{ if(ev.target.closest('[data-delete-item],[data-move-item],[data-quick-size]')) return; activeItemId=i.id; saveDraft(); renderAll();}; b.onkeydown=(ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); activeItemId=i.id; saveDraft(); renderAll(); } }; box.appendChild(b); }); }
+function renderItems(){ const box=$('[data-item-list]'); box.innerHTML=''; activeOrder.items.forEach((i, idx)=>{ const b=document.createElement('div'); b.className='item-btn'+(i.id===activeItemId?' active':''); b.tabIndex=0; b.setAttribute('role','button'); b.innerHTML=`<div class="item-main-row"><span class="item-summary"><span class="pos-box"><em>Pos.${idx+1}</em></span><strong>${escapeHtml(i.name||'Dritare '+(idx+1))}</strong></span><span class="item-controls"><b class="nom-mini">${itemNomination(i)}</b><span class="move-row"><button type="button" class="move-item" title="Lëviz lart" aria-label="Lëviz lart" data-move-item="${i.id}" data-dir="up" ${idx===0?'disabled':''}>↑</button><button type="button" class="move-item" title="Lëviz poshtë" aria-label="Lëviz poshtë" data-move-item="${i.id}" data-dir="down" ${idx===activeOrder.items.length-1?'disabled':''}>↓</button><button type="button" class="delete-item" title="Fshi nga porosia" aria-label="Fshi ${escapeHtml(i.name||'elementin')}" data-delete-item="${i.id}">🗑</button></span></span></div><span class="quick-size"><label>Gjerësi<input data-quick-size="width" data-item-id="${i.id}" type="number" min="200" max="6500" step="10" inputmode="numeric" value="${i.width||0}"></label><label>Lartësi<input data-quick-size="height" data-item-id="${i.id}" type="number" min="200" max="6500" step="10" inputmode="numeric" value="${i.height||0}"></label></span>`; b.onclick=(ev)=>{ if(ev.target.closest('[data-delete-item],[data-move-item],[data-quick-size]')) return; activeItemId=i.id; saveDraft(); renderAll();}; b.onkeydown=(ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); activeItemId=i.id; saveDraft(); renderAll(); } }; box.appendChild(b); }); }
 function renderOrderSummary(){
  const totalPieces = activeOrder.items.reduce((sum, it) => sum + (Number(it.quantity) || 1), 0);
  const totalArea = activeOrder.items.reduce((sum, it) => {
@@ -307,7 +313,12 @@ function rejectUser(id){ pendingUsers = pendingUsers.filter(u=>u.id!==id); saveP
 $('[data-order-form]').addEventListener('input', e=>{ activeOrder[e.target.name]=e.target.value; if(['client','date'].includes(e.target.name)) updateOrderNumber(true); saveDraft(); });
 $('[data-item-form]').addEventListener('input', e=>{
  const i=activeItem(); if(!i) return;
- i[e.target.name]=['width','height','quantity','shutterHeight'].includes(e.target.name)?Number(e.target.value):e.target.value;
+ if(['width','height'].includes(e.target.name)){
+   i[e.target.name] = clampProfileMm(e.target.value);
+   e.target.value = i[e.target.name];
+ } else {
+   i[e.target.name]=['quantity','shutterHeight'].includes(e.target.name)?Number(e.target.value):e.target.value;
+ }
  if(e.target.name === 'quantity' && (!i.quantity || i.quantity < 1)) i.quantity = 1;
  if(e.target.name === 'category'){ const opts = CATEGORY_TYPES[i.category] || CATEGORY_TYPES.window; if(!opts.map(([v])=>v).includes(i.type)) i.type = opts[0][0]; if(i.category === 'door') i.systemType = 'opening'; renderCategoryState(i); }
  saveDraft();
@@ -325,7 +336,8 @@ $('[data-item-list]').addEventListener('input', e => {
   if(!quick) return;
   const item = activeOrder.items.find(i => i.id === quick.dataset.itemId);
   if(!item) return;
-  item[quick.dataset.quickSize] = Math.max(200, Number(quick.value) || 200);
+  item[quick.dataset.quickSize] = clampProfileMm(quick.value);
+  quick.value = item[quick.dataset.quickSize];
   activeItemId = item.id;
   saveDraft();
   renderOrderSummary();
