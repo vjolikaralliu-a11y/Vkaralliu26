@@ -111,6 +111,6 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Fletore running at http://0.0.0.0:${PORT}`);
+app.listen(process.env.PORT || PORT, '0.0.0.0', () => {
+    console.log(`Fletore running on port ${process.env.PORT || PORT}`);
 });
