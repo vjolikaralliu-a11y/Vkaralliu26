@@ -3,66 +3,236 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login | Portal Porosive</title>
-  <link rel="stylesheet" href="./style.css" />
-  <style>
-    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f7f6; font-family: 'Inter', sans-serif; margin: 0; }
-    .auth-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-    .auth-head { text-align: center; margin-bottom: 2rem; }
-    .auth-head img { max-width: 150px; margin-bottom: 1rem; }
-    .form-group { margin-bottom: 1.5rem; }
-    label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
-    input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-    .btn-auth { width: 100%; padding: 0.8rem; background: #000; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
-    .btn-auth:hover { background: #333; }
-    .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #666; }
-    .auth-footer a { color: #000; text-decoration: none; font-weight: 600; }
-    .error-msg { color: red; font-size: 0.8rem; margin-top: 0.5rem; display: none; text-align: center; }
-  </style>
+  <title>Zona e rezervuar | Alumin.al</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./reserved.css" />
 </head>
 <body>
-  <div class="auth-card">
-    <div class="auth-head">
-      <img src="./assets/vloralumin-logo-header.png" alt="Vlora Alumin" />
-      <h2>Hyr në Portal</h2>
-    </div>
-    <form id="loginForm">
-      <div class="form-group">
-        <label>Përdoruesi</label>
-        <input type="text" name="username" required>
-      </div>
-      <div class="form-group">
-        <label>Fjalëkalimi</label>
-        <input type="password" name="password" required>
-      </div>
-      <button type="submit" class="btn-auth">Hyr</button>
-      <div id="error" class="error-msg"></div>
-    </form>
-    <div class="auth-footer">
-      Nuk ke llogari? <a href="/register">Regjistrohu</a><br>
-      <a href="/forgot-password">Harrove fjalëkalimin?</a>
-    </div>
-  </div>
+  <main class="reserved-shell">
+    <section class="login-screen" data-login-screen>
+      <div class="login-card">
+        <img src="./assets/vloralumin-logo-header.png" alt="Vlora Alumin" class="login-logo" />
+        <p class="eyebrow">Zona e rezervuar</p>
+        <h1>Hyrje për përdorues të aprovuar</h1>
+        <p>Çdo përdorues sheh vetëm porositë që ka regjistruar vetë. Përdoruesit e rinj dërgojnë kërkesë dhe aktivizohen vetëm pas aprovimit nga admin.</p>
 
-  <script>
-    document.getElementById('loginForm').onsubmit = async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-      });
-      const result = await res.json();
-      if (res.ok) {
-        window.location.href = result.redirect;
-      } else {
-        const err = document.getElementById('error');
-        err.innerText = result.error;
-        err.style.display = 'block';
-      }
-    };
-  </script>
+        <div class="auth-tabs" role="tablist" aria-label="Zona e rezervuar">
+          <button type="button" class="active" data-auth-tab="login">Hyrje</button>
+          <button type="button" data-auth-tab="register">Regjistrohu</button>
+        </div>
+
+        <form data-login-form class="login-form auth-panel active">
+          <label>Email<input name="email" type="email" autocomplete="username" placeholder="admin@alumin.al" required /></label>
+          <label>Password<input name="password" type="password" autocomplete="current-password" placeholder="demo" required /></label>
+          <button type="submit">Hyr në Zona e rezervuar</button>
+          <small>Demo admin: <strong>admin@alumin.al</strong> / <strong>demo</strong></small>
+        </form>
+
+        <form data-register-form class="login-form auth-panel">
+          <div class="form-grid compact">
+            <label>Emër / Biznes<input name="name" placeholder="Emri ose biznesi" required /></label>
+            <label>Email<input name="email" type="email" autocomplete="email" placeholder="email@example.com" required /></label>
+            <label>Telefon<input name="phone" placeholder="+355 ..." required /></label>
+            <label>Qytet<input name="city" placeholder="Vlorë" required /></label>
+            <label>Vendbanim<input name="residence" placeholder="Lagje / zonë" /></label>
+            <label>Vendodhje<input name="location" placeholder="Adresë / zonë pune" /></label>
+          </div>
+          <label>Password<input name="password" type="password" autocomplete="new-password" placeholder="Minimum 4 karaktere" required /></label>
+          <button type="submit">Dërgo kërkesë për aprovim</button>
+          <small>Kërkesa mbetet pezull derisa admini ta aprovojë.</small>
+        </form>
+      </div>
+    </section>
+
+    <section class="app" data-app hidden>
+      <aside class="sidebar">
+        <a href="./index.html" class="mini-logo"><img src="./assets/vloralumin-logo-header.png" alt="Vlora Alumin" /></a>
+        <button class="nav-btn active" data-view="new">Porosi e re<br><span>Shto porosi</span></button>
+        <button class="nav-btn" data-view="orders">Porositë<br><span>Porositë e mia</span></button>
+        <div class="admin-only" data-admin-box hidden>
+          <p class="side-title">Admin</p>
+          <button class="nav-btn" data-view="approvals">Aprovime<br><span>Përdorues të rinj</span></button>
+        </div>
+        <div class="user-box" data-user-box></div>
+        <button class="logout" data-logout>Dil</button>
+      </aside>
+
+      <section class="workspace">
+        <header class="workspace-head">
+          <div>
+            <p class="eyebrow" data-kicker>Zona e rezervuar</p>
+            <h1 data-page-title>Porosi e re</h1>
+          </div>
+          <div class="head-actions">
+            <button data-export>Eksporto Excel</button>
+            <button data-print-full>PDF Full</button>
+            <button data-print-compact>PDF Kompakt</button>
+          </div>
+        </header>
+
+        <div class="mobile-workflow-bar" data-mobile-workflow-bar>
+          <button type="button" data-toggle-mobile-menu>Menu</button>
+          <button type="button" data-show-order-data>Të dhënat</button>
+          <button type="button" data-focus-elements>Elementet</button>
+        </div>
+
+        <section class="view active" data-panel="new">
+          <form class="panel details" data-order-form>
+            <h2>Të dhënat e porosisë</h2>
+            <div class="form-grid">
+              <label>Nr. Porosie<input name="orderNo" placeholder="Auto" readonly /></label>
+              <label>Klienti<input name="client" placeholder="Emër klienti / biznesi" /></label>
+              <label>Projekti<input name="project" placeholder="Villa, Apartament, Dyqan..." /></label>
+              <label>Vendodhja<input name="location" placeholder="Qytet / adresë" /></label>
+              <label>Nr. apartamenti<input name="apartmentNo" placeholder="p.sh. Ap. 12" /></label>
+              <label>Kati<input name="floor" placeholder="p.sh. Kati 3" /></label>
+              <div class="map-field">
+                <span>Pin në hartë</span>
+                <button type="button" data-open-map>Zgjidh në hartë</button>
+                <small data-coordinates>Pa koordinata</small>
+                <input name="latitude" type="hidden" />
+                <input name="longitude" type="hidden" />
+              </div>
+              <label>Data<input name="date" type="date" /></label>
+              <label>Kontakti<input name="phone" placeholder="Telefon / WhatsApp" /></label>
+              <label>Matësi<input name="measuredBy" placeholder="Kush mori masat" /></label>
+            </div>
+            <label>Shënime<textarea name="notes" rows="3" placeholder="Detaje objekti, ngjyra, xhami, sistem profile..."></textarea></label>
+            <button type="button" class="continue-elements" data-continue-elements>Vazhdo te elementet</button>
+          </form>
+
+          <section class="panel configurator">
+            <div class="panel-head">
+              <h2>Elementet e porosisë</h2>
+              <button data-add-item>+ Shto dritare/derë</button>
+            </div>
+            <div class="config-layout">
+              <div class="items-column">
+                <div class="item-list" data-item-list></div>
+                <div class="order-summary-box" data-order-summary>
+                  <div><span>Copë total</span><strong data-total-pieces>0</strong></div>
+                  <div><span>m² total</span><strong data-total-area>0.00</strong></div>
+                </div>
+              </div>
+              <form class="item-editor" data-item-form>
+                <div class="position-badge" data-position-badge>Pos.1</div>
+                <label>Kategoria<select name="category" data-category-select>
+                  <option value="window">Dritare</option>
+                  <option value="door">Derë</option>
+                  <option value="facade">Vetratë</option>
+                </select></label>
+                <small class="category-note" data-category-note>Modelet aktuale 1 kanat / 2 kanate / 3 kanate vlejnë vetëm për Dritare.</small>
+                <label>Emërtimi<input name="name" placeholder="Dritare dhome 1" /></label>
+                <div class="three">
+                  <label>Sasia copë<input name="quantity" type="number" min="1" step="1" /></label>
+                  <label>Gjerësi mm<input name="width" type="number" min="200" step="10" /></label>
+                  <label>Lartësi totale mm<input name="height" type="number" min="200" step="10" /></label>
+                </div>
+                <small class="measure-note" data-measure-note>Shënim: kur ka kuti grile, lartësia reale e dritares = lartësia totale − lartësia e kutisë së grilës.</small>
+                <div class="two">
+                  <label>Tip sistemi<select name="systemType">
+                    <option value="opening">Me hapje</option>
+                    <option value="sliding">Me rrëshkitje</option>
+                  </select></label>
+                  <label>Seria<select name="systemSeries" data-system-series>
+                    <option value="VLA625">TERMIK VLA625</option>
+                    <option value="VLA775">TERMIK775</option>
+                    <option value="other">Tjetër</option>
+                  </select></label>
+                </div>
+                <div class="two">
+                  <label>Tipologjia<select name="type" data-type-select>
+                    <option value="single">1 kanat</option>
+                    <option value="double">2 kanate</option>
+                    <option value="triple">3 kanate</option>
+                    <option value="other">Tjetër</option>
+                  </select></label>
+                  <label>Krahu / Hapja<select name="opening">
+                    <option value="left">Majtas</option>
+                    <option value="right">Djathtas</option>
+                    <option value="tilt">Oscilo-batente</option>
+                    <option value="sliding">Rrëshqitëse</option>
+                    <option value="fixed">Pa hapje</option>
+                  </select></label>
+                </div>
+                <div class="two">
+                  <label class="color-field">Ngjyra<select name="color" data-color-select>
+                    <option value="RAL9016">RAL9016 (Bardhë)</option>
+                    <option value="RAL9016_TEXTURE">RAL9016 Texture</option>
+                    <option value="RAL9005">RAL9005 (Zezë)</option>
+                    <option value="RAL7016_MAT">RAL7016 (Mat)</option>
+                    <option value="RAL7016_TEX">RAL7016 (TEX)</option>
+                    <option value="OTHER">TJETËR</option>
+                  </select>
+                  <span class="color-preview" data-color-preview aria-hidden="true"><img src="./assets/ral9016.svg" alt="RAL preview"><b>RAL9016 (Bardhë)</b></span>
+                  </label>
+                  <label>Xhami<input name="glass" placeholder="Dopio, Low-E..." /></label>
+                </div>
+                <div class="three shutter-fields">
+                  <label>Kutia grilës<select name="shutterBox">
+                    <option value="no">Jo</option>
+                    <option value="yes">Po</option>
+                  </select></label>
+                  <label>Masa kuti<select name="shutterHeight">
+                    <option value="195">195 mm</option>
+                    <option value="220">220 mm</option>
+                  </select></label>
+                  <label>Tipi<input name="shutterType" placeholder="PVC / Alumin" /></label>
+                </div>
+                <label>Detaje<textarea name="details" rows="3" placeholder="Rrjeta, grila, prag, aksesorë..."></textarea></label>
+              </form>
+              <div class="preview-card">
+                <div class="preview-top"><strong data-preview-title>Dritare</strong><span data-preview-size>1200 × 1400 mm</span></div>
+                <svg data-window-svg viewBox="0 0 500 360" role="img" aria-label="Vizatim 2D i tipologjisë"></svg>
+              </div>
+            </div>
+            <div class="submit-row">
+              <button class="save-order" data-save-order type="button">Ruaj porosinë</button>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" data-panel="orders">
+          <div class="panel">
+            <h2>Porositë — porositë e regjistruara nga ti</h2>
+            <div class="orders-list" data-orders-list></div>
+          </div>
+        </section>
+
+        <section class="view" data-panel="approvals">
+          <div class="panel">
+            <h2>Kërkesa për përdorues të rinj</h2>
+            <p class="muted">Vetëm admini mund t'i aprovojë. Pas aprovimit, përdoruesi mund të hyjë me email/password që vendosi gjatë regjistrimit.</p>
+            <div class="approvals-list" data-approvals-list></div>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+  <section class="print-report" data-print-report></section>
+    <section class="map-modal" data-map-modal hidden>
+      <div class="map-dialog">
+        <div class="map-head">
+          <div>
+            <p class="eyebrow">Vendodhja e objektit</p>
+            <h2>Zgjidh pin-in në hartë</h2>
+          </div>
+          <button type="button" data-close-map>×</button>
+        </div>
+        <p class="muted">Kliko mbi hartë për të vendosur pin-in. Koordinatat ruhen automatikisht te porosia.</p>
+        <div id="order-map" class="order-map"></div>
+        <div class="map-actions">
+          <span data-map-coordinates>Pa koordinata</span>
+          <button type="button" data-use-my-location>Përdor vendndodhjen aktuale</button>
+          <button type="button" data-confirm-map>Ruaj vendodhjen</button>
+        </div>
+      </div>
+    </section>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./reserved.js"></script>
 </body>
 </html>

@@ -93,12 +93,12 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-app.get('/dashboard', authRequired, (req, res) => {
+app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(PUBLIC_DIR, 'index.html'), SEND_FILE_OPTIONS);
 });
 
-app.get('/admin', authRequired, adminRequired, (req, res) => {
-    res.status(404).send('Admin page is not available yet.');
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(PUBLIC_DIR, 'index.html'), SEND_FILE_OPTIONS);
 });
 
 app.get('/api/pending-users', authRequired, adminRequired, (req, res) => {
