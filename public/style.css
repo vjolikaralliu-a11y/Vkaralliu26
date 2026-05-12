@@ -554,7 +554,7 @@ input[name="orderNo"]{background:rgba(245,158,11,.1)!important;border-color:rgba
 @media(min-width:900px){
   .order-dashboard{padding:10px 12px!important;border-radius:12px!important;background:linear-gradient(135deg,rgba(16,23,34,.94),rgba(7,11,18,.92))!important}
   .order-dashboard h2{font-size:1rem!important;margin:0 0 8px!important;color:#fed7aa!important;letter-spacing:.02em!important}
-  .order-dashboard .form-grid{display:grid!important;grid-template-columns:1.05fr 1.35fr 1.2fr 1.2fr .72fr .65fr .95fr .82fr .95fr 1fr!important;gap:7px!important;margin-bottom:7px!important;align-items:end!important}
+  .order-dashboard .form-grid{display:grid!important;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr))!important;gap:12px!important;margin-bottom:12px!important;align-items:end!important}
   .order-dashboard label,.order-dashboard .map-field{font-size:.72rem!important;gap:4px!important;min-width:0!important}
   .order-dashboard input,.order-dashboard textarea{padding:7px 8px!important;border-radius:7px!important;font-size:.84rem!important;min-height:34px!important}
   .order-dashboard textarea{min-height:36px!important;resize:vertical!important}

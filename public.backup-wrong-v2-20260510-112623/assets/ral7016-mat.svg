@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#293133"/><stop offset="1" stop-color="#3b4548"/></linearGradient></defs>
+  <rect x="2" y="2" width="116" height="116" rx="10" fill="url(#g)" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M14 18h92M14 102h92" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
+  <text x="60" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#f8fafc">RAL 7016 MAT</text>
+</svg>

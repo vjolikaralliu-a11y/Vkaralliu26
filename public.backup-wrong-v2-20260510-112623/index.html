@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reserved Area V2 | Alumin.al</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./reserved-v2.css" />
+</head>
+<body>
+  <main class="phone-app">
+    <section class="screen home active" data-screen="home">
+      <header class="home-head">
+        <button class="hamb">☰</button>
+        <img src="./assets/vloralumin-logo-header.png" alt="Vlora Alumin" />
+        <div class="total">€ 0</div>
+      </header>
+      <div class="hero-banner">
+        <strong>Reserved Area</strong>
+        <span>Matje, tipologji dhe porosi dritare/dyer</span>
+      </div>
+      <div class="home-grid">
+        <button class="home-card" data-go="orders"><span class="emoji">📦</span><b>Orders</b></button>
+        <button class="home-card"><span class="emoji">🏷️</span><b>Product prices</b></button>
+        <button class="home-card"><span class="emoji">📍</span><b>Clients / objects</b></button>
+        <button class="home-card primary" data-go="category"><span class="emoji window-emoji">▥</span><b>New order</b></button>
+        <button class="home-card"><span class="emoji">🏢</span><b>Company</b></button>
+        <button class="home-card"><span class="emoji">🏭</span><b>Warehouse</b></button>
+      </div>
+    </section>
+
+    <section class="screen category" data-screen="category">
+      <div class="blue-top">
+        <button data-go="home" class="back">←</button>
+        <button class="cat active" data-category="windows">▥<span>Windows</span></button>
+        <button class="cat" data-category="doors">▯<span>Doors</span></button>
+        <button class="cat" data-category="arches">⌒<span>Arches</span></button>
+      </div>
+      <div class="dark-list">
+        <div class="quick-editor-card">
+          <div class="side-tools left">
+            <button data-open="left">◁</button><button data-open="tilt">△</button><button data-open="turnTilt">⧖</button><button data-open="fixed">□</button>
+          </div>
+          <div class="big-preview" data-big-preview></div>
+          <div class="side-tools right">
+            <button data-layout="hbars">☰</button><button data-layout="vbars">▥</button><button data-layout="glass">□</button>
+            <button data-open="right">▷</button><button data-open="right2">▻</button><button data-open="right3">◢</button><button data-open="right4">◣</button>
+          </div>
+        </div>
+        <div class="typology-groups" data-typology-groups></div>
+      </div>
+    </section>
+
+    <section class="screen editor" data-screen="editor">
+      <div class="editor-top">
+        <button data-go="category" class="round">‹</button>
+        <button class="round">↶</button>
+        <button class="round muted">↷</button>
+        <button class="round">🗑</button>
+        <button class="round">⚙</button>
+        <button class="round" data-save-order>➜</button>
+      </div>
+      <div class="tool-row">
+        <button data-open="left" class="selected">◁</button>
+        <button data-open="right">▷</button>
+        <button data-open="tilt">△</button>
+        <button data-open="fixed">□</button>
+        <button data-layout="vbars">▥</button>
+        <button data-layout="hbars">☰</button>
+        <button data-layout="glass">▣</button>
+      </div>
+      <section class="canvas-wrap">
+        <svg data-editor-svg viewBox="0 0 520 650" aria-label="Editor teknik dritare"></svg>
+      </section>
+      <form class="bottom-sheet" data-dim-form>
+        <label>Gjerësi<input name="width" type="number" value="1500" min="200" step="10"></label>
+        <label>Lartësi<input name="height" type="number" value="1600" min="200" step="10"></label>
+        <label>Sistem<select name="systemType"><option value="opening">Me hapje</option><option value="sliding">Me rrëshkitje</option></select></label>
+        <label>Seri<select name="series"><option>VLA625</option><option>VLA755</option><option>S350</option><option>S560</option><option>Tjetër</option></select></label>
+      </form>
+    </section>
+  </main>
+  <script src="./reserved-v2.js"></script>
+</body>
+</html>

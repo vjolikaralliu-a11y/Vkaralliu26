@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs><pattern id="p" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#293133"/><circle cx="1" cy="1" r=".7" fill="#536064"/><circle cx="5" cy="4" r=".8" fill="#1d2528"/></pattern></defs>
+  <rect x="2" y="2" width="116" height="116" rx="10" fill="url(#p)" stroke="#cbd5e1" stroke-width="2"/>
+  <path d="M14 18h92M14 102h92" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
+  <text x="60" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#f8fafc">RAL 7016 TEX</text>
+</svg>
